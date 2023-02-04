@@ -10,8 +10,7 @@ const port = process.env.PORT || 5000;
 // middlewares
 app.use(
   cors({
-    origin:
-      "https://web-community-attendance-backend-production.up.railway.app",
+    origin: "https://web-community-backend.onrender.com",
   })
 );
 app.use(express.json());
