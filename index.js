@@ -1,47 +1,45 @@
 const express = require("express");
-const mongoose = require("mongoose");
+const mysql = require("mysql");
+
 const cors = require("cors");
-require("dotenv").config();
-const Attendance = require("./model/attendance");
 
 const app = express();
 const port = process.env.PORT || 5000;
 
-// middlewares
-app.use(
-  cors({
-    origin: "*",
-    credentials: true,
-    methods: "POST",
-  })
-);
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-// connect database
-const connectDatabase = async () => {
-  mongoose.set("strictQuery", false);
-  await mongoose.connect(process.env.MONGO_URI, () => {
-    console.log("Database connected successfully");
-  });
-};
+// connectDatabase;
+const connection = mysql.createConnection({
+  host: "localhost",
+  user: "root",
+  password: "",
+  database: "attendance",
+});
 
-connectDatabase();
+connection.connect((err) => {
+  if (err) {
+    console.error(err.message);
+  }
+  console.log("Database connected successfully");
+});
 
 // submit attendance
 app.post("/attendance", async (req, res) => {
   const { firstname, lastname, year, message } = req.body;
-
   if (!(firstname || lastname || year || message)) {
     res.status(400).json({ message: "Please fill all the fields!" });
   } else {
-    await Attendance.create({
-      firstname,
-      lastname,
-      year,
-      message,
-    });
-    res.status(200).json({ message: "Attendance submitted successfully!" });
+    let sql = "INSERT INTO attendees SET ?";
+    await connection.query(
+      sql,
+      { firstname, lastname, year, message },
+      (err, result) => {
+        if (err) throw err;
+        res.status(200).json({ message: "Attendance submitted successfully!" });
+      }
+    );
   }
 });
 
