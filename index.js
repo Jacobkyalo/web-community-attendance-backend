@@ -10,7 +10,8 @@ const port = process.env.PORT || 5000;
 // middlewares
 app.use(
   cors({
-    origin: "https://web-community-backend.onrender.com",
+    origin: "https://web-community-attendance.netlify.app/",
+    credentials: true,
   })
 );
 app.use(express.json());
