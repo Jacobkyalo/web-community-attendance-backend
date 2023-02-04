@@ -7,7 +7,8 @@ const port = process.env.PORT || 5000;
 
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin:
+      "https://web-community-attendance-backend-production.up.railway.app",
   })
 );
 app.use(express.json());
