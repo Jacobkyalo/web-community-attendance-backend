@@ -35,10 +35,13 @@ mongoose.set("strictQuery", false);
 mongoose
   .connect(process.env.MONGO_URI, { useNewUrlParser: true })
   .then(() => {
-    app.listen(PORT, () => {
-      console.log(`Server is running at port ${PORT}`);
-    });
+    console.log("Database connected successfully");
   })
   .catch((err) => {
     console.log(err);
   });
+
+// app listen
+app.listen(PORT, () => {
+  console.log(`Server is running at port ${PORT}`);
+});
